@@ -18,6 +18,8 @@ The repository focuses on one question:
 | Benders decomposition | Separate binary design decisions from continuous recourse | Capacitated facility location |
 | Column generation | Solve a restricted master and generate improving columns by pricing | Cutting stock |
 | Lagrangian relaxation | Dualize a complicating resource constraint and optimize separable subproblems | 0-1 knapsack relaxation |
+| Progressive Hedging | Enforce nonanticipativity across scenario subproblems with augmented penalties | Two-stage stochastic production |
+| Column-and-constraint generation | Alternate a decision master with an adversarial uncertainty subproblem | Budgeted robust production |
 
 The examples are intentionally small enough to verify independently, but the implementations expose the algorithmic objects that matter at scale: master bounds, subproblem duals, reduced costs, multiplier updates, incumbent recovery, and convergence gaps.
 
@@ -54,6 +56,8 @@ Python 3.10+ is supported. The reference implementations use NumPy and SciPy/HiG
 python -m decompopt.benders_facility
 python -m decompopt.column_generation
 python -m decompopt.lagrangian_knapsack
+python -m decompopt.progressive_hedging
+python -m decompopt.column_constraint_generation
 ```
 
 ## Research standard
@@ -76,8 +80,6 @@ Planned extensions include:
 - logic-based Benders;
 - Dantzig-Wolfe decomposition beyond cutting stock;
 - branch-and-price;
-- Progressive Hedging;
-- column-and-constraint generation;
 - decomposition for stochastic and distributionally robust models;
 - stabilization and cut/column management strategies.
 
