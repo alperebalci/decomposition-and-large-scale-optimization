@@ -9,6 +9,8 @@ projects:
   - benders-facility-location
   - column-generation-cutting-stock
   - lagrangian-knapsack-relaxation
+  - progressive-hedging-stochastic-production
+  - column-and-constraint-generation-robust-production
 conventions:
   provenance_records: false
   reproducibility_expected: true
