@@ -98,7 +98,7 @@ def extensive_form_reference(
 
 def solve_progressive_hedging(
     instance: StochasticProductionInstance | None = None,
-    rho: float = 4.0,
+    rho: float = 1.0,
     tolerance: float = 1e-6,
     max_iterations: int = 500,
 ) -> ProgressiveHedgingResult:
