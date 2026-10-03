@@ -1,5 +1,6 @@
 import numpy as np
 
+from decompopt.branch_and_price import solve_branch_and_price
 from decompopt.benders_facility import (
     example_instance,
     solve_benders,
