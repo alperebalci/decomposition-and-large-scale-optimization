@@ -86,17 +86,20 @@ class ConsensusADMMResult:
         return float(np.linalg.norm(self.consensus - self.reference_solution))
 
 
+def _objective_value(problem: ConsensusQuadraticProblem, z: Array) -> float:
+    value = 0.0
+    for q_i, c_i in zip(problem.q_matrices, problem.c_vectors, strict=True):
+        value += 0.5 * float(z @ q_i @ z) + float(c_i @ z)
+    return value
+
+
 def objective(problem: ConsensusQuadraticProblem, z: Array) -> float:
     """Evaluate the original centralized objective at a consensus vector."""
     p = problem.validated()
     z = np.asarray(z, dtype=float)
     if z.shape != (p.c_vectors.shape[1],):
         raise ValueError("z has incompatible shape")
-
-    value = 0.0
-    for q_i, c_i in zip(p.q_matrices, p.c_vectors, strict=True):
-        value += 0.5 * float(z @ q_i @ z) + float(c_i @ z)
-    return value
+    return _objective_value(p, z)
 
 
 def solve_centralized(problem: ConsensusQuadraticProblem) -> tuple[Array, float]:
@@ -105,7 +108,7 @@ def solve_centralized(problem: ConsensusQuadraticProblem) -> tuple[Array, float]
     q_sum = np.sum(p.q_matrices, axis=0)
     c_sum = np.sum(p.c_vectors, axis=0)
     z_star = np.linalg.solve(q_sum, -c_sum)
-    return z_star, objective(p, z_star)
+    return z_star, _objective_value(p, z_star)
 
 
 def solve_consensus_admm(
@@ -174,7 +177,7 @@ def solve_consensus_admm(
         history.append(
             ADMMIteration(
                 iteration=iteration,
-                objective=objective(p, consensus),
+                objective=_objective_value(p, consensus),
                 primal_residual=primal_residual,
                 dual_residual=dual_residual,
                 primal_tolerance=primal_tolerance,
