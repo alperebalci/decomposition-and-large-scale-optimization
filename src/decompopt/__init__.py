@@ -6,4 +6,5 @@ __all__ = [
     "lagrangian_knapsack",
     "progressive_hedging",
     "column_constraint_generation",
+    "consensus_admm",
 ]
