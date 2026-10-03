@@ -1,5 +1,6 @@
 import numpy as np
 
+from decompopt.branch_and_price import solve_branch_and_price
 from decompopt.benders_facility import (
     example_instance,
     solve_benders,
@@ -23,6 +24,19 @@ def test_column_generation_matches_full_pattern_lp():
     reference = full_lp_reference()
     assert np.isclose(cg.lp_objective, reference, atol=1e-8)
     assert cg.last_reduced_cost >= -1e-8
+
+
+def test_branch_and_price_matches_full_integer_master():
+    result = solve_branch_and_price()
+    assert np.isclose(result.objective, result.reference_objective, atol=1e-8)
+    assert result.root_lp_bound < result.objective - 1e-8
+    assert result.nodes_explored > 1
+    assert result.columns_generated > 0
+    assert np.allclose(
+        result.patterns.T @ result.pattern_usage,
+        np.ones(result.patterns.shape[1]),
+        atol=1e-8,
+    )
 
 
 def test_lagrangian_bound_is_valid():

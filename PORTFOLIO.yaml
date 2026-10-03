@@ -8,6 +8,7 @@ owner: jorsacademy
 projects:
   - benders-facility-location
   - column-generation-cutting-stock
+  - branch-and-price-bin-packing
   - lagrangian-knapsack-relaxation
   - progressive-hedging-stochastic-production
   - column-and-constraint-generation-robust-production
