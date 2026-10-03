@@ -48,3 +48,23 @@ def test_ccg_matches_compact_robust_counterpart():
     assert result.violation <= 1e-8
     assert np.isclose(result.profit, result.compact_profit, atol=1e-8)
     assert result.iterations >= 2
+
+
+from decompopt.consensus_admm import example_problem as consensus_example
+from decompopt.consensus_admm import solve_consensus_admm
+
+
+def test_consensus_admm_matches_centralized_reference():
+    result = solve_consensus_admm(
+        consensus_example(),
+        rho=1.0,
+        abs_tol=1e-8,
+        rel_tol=1e-8,
+        max_iterations=5000,
+    )
+    assert result.converged
+    assert result.primal_residual <= result.history[-1].primal_tolerance
+    assert result.dual_residual <= result.history[-1].dual_tolerance
+    assert np.allclose(result.consensus, result.reference_solution, atol=1e-6)
+    assert np.isclose(result.objective, result.reference_objective, atol=1e-10)
+    assert np.max(np.linalg.norm(result.local_solutions - result.consensus, axis=1)) <= 1e-6
